@@ -14,10 +14,11 @@ Copyright (c) 2013-2014 by:
 
 Overview
 --------
-CSS (Center for Seismic Studies) read support for ObsPy.
+CSS (Center for Seismic Studies)  and NNSA KB Core (National Nuclear Security
+Administration Knowledge Base Core) read support for ObsPy.
 
-This module provides read support for CSS waveform data. This module is
-based on the code of Marcus Walther.
+This module provides read support for CSS  and NNSA KB Core waveform data. 
+This module is based on the code of Marcus Walther.
 
 ObsPy is an open-source project dedicated to provide a Python framework for
 processing seismological data. It provides parsers for common file formats and

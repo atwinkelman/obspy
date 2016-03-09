@@ -16,7 +16,7 @@ import numpy as np
 from obspy import read
 from obspy.core import Stream, Trace, UTCDateTime
 from obspy.core.util import NamedTemporaryFile
-from obspy.io.css.core import _is_css, _read_css
+from obspy.io.css.core import _is_css, _read_css, _is_nnsa_kb_core, _read_nnsa_kb_core
 
 
 class CoreTestCase(unittest.TestCase):
@@ -26,7 +26,8 @@ class CoreTestCase(unittest.TestCase):
     def setUp(self):
         # directory where the test files are located
         self.path = os.path.join(os.path.dirname(__file__), 'data')
-        self.filename = os.path.join(self.path, 'test.wfdisc')
+        self.filename = os.path.join(self.path, 'test.wfdisc')  # CSS
+        self.filename2 = os.path.join(self.path, 'test2.wfdisc')  # NNSA_KB_CORE
         # set up stream for validation
         header = {}
         header['station'] = 'TEST'
@@ -65,8 +66,21 @@ class CoreTestCase(unittest.TestCase):
             fh = open(tempfile, "wb")
             fh.close()
             assert(not _is_css(tempfile))
+            
+    def test_is_nnsa_kb_core(self):
+        """
+        Read files via obspy.core.stream.read function.
+        """
+        # 1
+        assert(_is_nnsa_kb_core(self.filename2))
+        # check that empty files are not recognized as NNSA_KB_CORE
+        with NamedTemporaryFile() as tf:
+            tempfile = tf.name
+            fh = open(tempfile, "wb")
+            fh.close()
+            assert(not _is_nnsa_kb_core(tempfile))
 
-    def test_read_via_obspy(self):
+    def test_css_read_via_obspy(self):
         """
         Read files via obspy.core.stream.read function.
         """
@@ -74,12 +88,31 @@ class CoreTestCase(unittest.TestCase):
         st = read(self.filename)
         self.assertEqual(st, self.st_result)
 
-    def test_read_via_module(self):
+    def test_css_read_via_module(self):
         """
         Read files via obspy.io.css.core._read_css function.
         """
         # 1
         st = _read_css(self.filename)
+        # _format entry is not present when using low-level function
+        for tr in self.st_result:
+            tr.stats.pop('_format')
+        self.assertEqual(st, self.st_result)
+    
+    def test_nnsa_kb_core_read_via_obspy(self):
+        """
+        Read files via obspy.core.stream.read function.
+        """
+        # 1
+        st = read(self.filename2)
+        self.assertEqual(st, self.st_result)
+
+    def test_nnsa_kb_core_read_via_module(self):
+        """
+        Read files via obspy.io.css.core._read_nnsa_kb_core function.
+        """
+        # 1
+        st = _read_nnsa_kb_core(self.filename2)
         # _format entry is not present when using low-level function
         for tr in self.st_result:
             tr.stats.pop('_format')

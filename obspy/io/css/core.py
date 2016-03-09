@@ -83,7 +83,7 @@ def _is_nnsa_kb_core(filename):
     """
     # Fixed file format.
     # Tests:
-    #  - the length of each line (283 chars)
+    #  - the length of each line (287 chars)
     #  - two epochal time fields
     #    (for position of dot and if they convert to UTCDateTime)
     #  - supported data type descriptor

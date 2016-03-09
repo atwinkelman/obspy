@@ -1,3 +1,10 @@
+1.0.x:
+ - obspy.clients.fdsn:
+    * Local URLs are now recognized as valid URLs. (see #1309)
+	* Some bug fixes for the mass downloader. (see #1293, #1304)
+ - obspy.css
+    * Read support for NNSA KB Core format waveform data. (see #1290, #1301)
+
 1.0.0: (doi: 10.5281/zenodo.46151)
  - General:
    * Requirements have been increased to reflect latest distributions:
